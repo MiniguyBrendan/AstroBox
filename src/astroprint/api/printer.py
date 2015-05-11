@@ -352,6 +352,22 @@ def printerCommand():
 
 	return NO_CONTENT
 
+@api.route("/printer/gcodecommand", methods=["POST"])
+@restricted_access
+def gcodeCommand():
+	pm = printerManager()
+
+	if not pm.isOperational():
+		return make_response("Printer is not operational", 409)
+
+	if not "application/json" in request.headers["Content-Type"]:
+		return make_response("Expected content type JSON", 400)
+
+	data = request.json
+
+	pm.commands(data)
+
+	return NO_CONTENT
 
 @api.route("/printer/command/custom", methods=["GET"])
 def getCustomControls():

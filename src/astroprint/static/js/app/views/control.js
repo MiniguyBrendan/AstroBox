@@ -396,3 +396,26 @@ var ControlView = Backbone.View.extend({
 		this.$el.addClass('hide');
 	}
 });
+var sendGcodeView = Backbone.View.extend({
+	el: '#'
+	events: {
+		'click .sendGcode': "sendGcode",
+	},
+	sendGcode: function()
+	{
+		this._sendGcode();
+	},
+	_sendGcode: function()
+	{
+        var data = $('#gcode-entry');
+
+        $.ajax({
+            url: API_BASEURL + "printer/gcodecommand",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(data)
+        });	
+        $('#gcode-entry').val('');
+	}
+});
